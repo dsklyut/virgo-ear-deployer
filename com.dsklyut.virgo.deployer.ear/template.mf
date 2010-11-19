@@ -1,0 +1,5 @@
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.dsklyut.virgo.deployer.ear
+Bundle-Vendor: PTC
+Bundle-Version: 1.0.0.BUILD-SNAPSHOT
+Import-Template: org.osgi.*;version=0

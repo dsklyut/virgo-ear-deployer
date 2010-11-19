@@ -1,0 +1,44 @@
+<application xmlns="http://java.sun.com/xml/ns/javaee"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_5.xsd"
+             version="5">
+
+    <!--Zero or more repetitions:-->
+    <description>Description</description>
+    <!--Zero or more repetitions:-->
+    <display-name>Display Name</display-name>
+    <!--Zero or more repetitions:-->
+    <icon>
+        <!--Optional:-->
+        <small-icon>/small/icon</small-icon>
+        <!--Optional:-->
+        <large-icon>large/icon</large-icon>
+    </icon>
+    <!--1 or more repetitions:-->
+    <module>
+        <!--You have a CHOICE of the next 4 items at this level-->
+        <connector>token</connector>
+    </module>
+    <module>
+        <web>
+            <web-uri>web.war</web-uri>
+            <context-root>/web</context-root>
+        </web>
+        <alt-dd>alt/descriptor</alt-dd>
+    </module>
+    <module>
+        <ejb>ejb</ejb>
+    </module>
+    <module>
+        <java>bundle.jar</java>
+    </module>
+
+    <!--Zero or more repetitions:-->
+    <security-role>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <role-name>token</role-name>
+    </security-role>
+    <!--Optional:-->
+    <library-directory>runtime/lib</library-directory>
+</application>

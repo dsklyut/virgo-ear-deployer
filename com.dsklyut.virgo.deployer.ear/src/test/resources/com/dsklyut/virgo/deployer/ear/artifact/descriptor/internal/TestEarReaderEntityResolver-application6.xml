@@ -1,0 +1,365 @@
+<application xmlns="http://java.sun.com/xml/ns/javaee"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+      	http://java.sun.com/xml/ns/javaee/application_6.xsd"
+      version="6">
+    <!--Optional:-->
+    <application-name>token</application-name>
+    <!--Zero or more repetitions:-->
+    <description>string</description>
+    <!--Zero or more repetitions:-->
+    <display-name>token</display-name>
+    <!--Zero or more repetitions:-->
+    <icon>
+        <!--Optional:-->
+        <small-icon>token</small-icon>
+        <!--Optional:-->
+        <large-icon>token</large-icon>
+    </icon>
+    <!--Optional:-->
+    <initialize-in-order>true</initialize-in-order>
+    <!--1 or more repetitions:-->
+    <module>
+        <!--You have a CHOICE of the next 4 items at this level-->
+        <connector>token.rar</connector>
+        <alt-dd>token</alt-dd>
+    </module>
+    <module>
+        <ejb>ejb.jar</ejb>
+    </module>
+    <module>
+        <java>java.jar</java>
+    </module>
+    <module>
+        <web>
+            <web-uri>web.war</web-uri>
+            <context-root>/test</context-root>
+        </web>
+    </module>
+    <!--Zero or more repetitions:-->
+    <security-role>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <role-name>token</role-name>
+    </security-role>
+    <!--Optional:-->
+    <library-directory>token</library-directory>
+    <!--Zero or more repetitions:-->
+    <env-entry>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <env-entry-name>token</env-entry-name>
+        <!--Optional:-->
+        <env-entry-type>token</env-entry-type>
+        <!--Optional:-->
+        <env-entry-value>string</env-entry-value>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Zero or more repetitions:-->
+        <injection-target>
+            <injection-target-class>token</injection-target-class>
+            <injection-target-name>token</injection-target-name>
+        </injection-target>
+        <!--Optional:-->
+        <lookup-name>string</lookup-name>
+    </env-entry>
+    <!--Zero or more repetitions:-->
+    <ejb-ref>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <ejb-ref-name>token</ejb-ref-name>
+        <!--Optional:-->
+        <ejb-ref-type>Session</ejb-ref-type>
+        <!--Optional:-->
+        <home>token</home>
+        <!--Optional:-->
+        <remote>token</remote>
+        <!--Optional:-->
+        <ejb-link>token</ejb-link>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Zero or more repetitions:-->
+        <injection-target>
+            <injection-target-class>token</injection-target-class>
+            <injection-target-name>token</injection-target-name>
+        </injection-target>
+        <!--Optional:-->
+        <lookup-name>string</lookup-name>
+    </ejb-ref>
+    <!--Zero or more repetitions:-->
+    <ejb-local-ref>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <ejb-ref-name>token</ejb-ref-name>
+        <!--Optional:-->
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <!--Optional:-->
+        <local-home>token</local-home>
+        <!--Optional:-->
+        <local>token</local>
+        <!--Optional:-->
+        <ejb-link>token</ejb-link>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Zero or more repetitions:-->
+        <injection-target>
+            <injection-target-class>token</injection-target-class>
+            <injection-target-name>token</injection-target-name>
+        </injection-target>
+        <!--Optional:-->
+        <lookup-name>string</lookup-name>
+    </ejb-local-ref>
+    <!--Zero or more repetitions:-->
+    <service-ref>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <!--Zero or more repetitions:-->
+        <display-name>token</display-name>
+        <!--Zero or more repetitions:-->
+        <icon>
+            <!--Optional:-->
+            <small-icon>token</small-icon>
+            <!--Optional:-->
+            <large-icon>token</large-icon>
+        </icon>
+        <service-ref-name>token</service-ref-name>
+        <service-interface>token</service-interface>
+        <!--Optional:-->
+        <service-ref-type>token</service-ref-type>
+        <!--Optional:-->
+        <wsdl-file>http://www.corp.com/turbine/iovis</wsdl-file>
+        <!--Optional:-->
+        <jaxrpc-mapping-file>token</jaxrpc-mapping-file>
+        <!--Optional:-->
+        <service-qname>qname</service-qname>
+        <!--Zero or more repetitions:-->
+        <port-component-ref>
+            <service-endpoint-interface>token</service-endpoint-interface>
+            <!--Optional:-->
+            <enable-mtom>true</enable-mtom>
+            <!--Optional:-->
+            <mtom-threshold>200</mtom-threshold>
+            <!--Optional:-->
+            <addressing>
+                <!--Optional:-->
+                <enabled>true</enabled>
+                <!--Optional:-->
+                <required>true</required>
+                <!--Optional:-->
+                <responses>ALL</responses>
+            </addressing>
+            <!--Optional:-->
+            <respect-binding>
+                <!--Optional:-->
+                <enabled>false</enabled>
+            </respect-binding>
+            <!--Optional:-->
+            <port-component-link>token</port-component-link>
+        </port-component-ref>
+        <!--Optional:-->
+        <handler-chains>
+            <!--Zero or more repetitions:-->
+            <handler-chain>
+                <!--You have a CHOICE of the next 3 items at this level-->
+                <!--<service-name-pattern>token</service-name-pattern>-->
+                <!--<port-name-pattern>token</port-name-pattern>-->
+                <protocol-bindings>token</protocol-bindings>
+                <!--1 or more repetitions:-->
+                <handler>
+                    <!--Zero or more repetitions:-->
+                    <description>string</description>
+                    <!--Zero or more repetitions:-->
+                    <display-name>token</display-name>
+                    <!--Zero or more repetitions:-->
+                    <icon>
+                        <!--Optional:-->
+                        <small-icon>token</small-icon>
+                        <!--Optional:-->
+                        <large-icon>token</large-icon>
+                    </icon>
+                    <handler-name>token</handler-name>
+                    <handler-class>token</handler-class>
+                    <!--Zero or more repetitions:-->
+                    <init-param>
+                        <!--Zero or more repetitions:-->
+                        <description>string</description>
+                        <param-name>token</param-name>
+                        <param-value>string</param-value>
+                    </init-param>
+                    <!--Zero or more repetitions:-->
+                    <soap-header>qname</soap-header>
+                    <!--Zero or more repetitions:-->
+                    <soap-role>token</soap-role>
+                    <!--Zero or more repetitions:-->
+                    <port-name>token</port-name>
+                </handler>
+
+            </handler-chain>
+        </handler-chains>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Zero or more repetitions:-->
+        <injection-target>
+            <injection-target-class>token</injection-target-class>
+            <injection-target-name>token</injection-target-name>
+        </injection-target>
+        <!--Optional:-->
+        <lookup-name>string</lookup-name>
+    </service-ref>
+    <!--Zero or more repetitions:-->
+    <resource-ref>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <res-ref-name>token</res-ref-name>
+        <!--Optional:-->
+        <res-type>token</res-type>
+        <!--Optional:-->
+        <res-auth>Application</res-auth>
+        <!--Optional:-->
+        <res-sharing-scope>Unshareable</res-sharing-scope>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Zero or more repetitions:-->
+        <injection-target>
+            <injection-target-class>token</injection-target-class>
+            <injection-target-name>token</injection-target-name>
+        </injection-target>
+        <!--Optional:-->
+        <lookup-name>string</lookup-name>
+    </resource-ref>
+    <!--Zero or more repetitions:-->
+    <resource-env-ref>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <resource-env-ref-name>token</resource-env-ref-name>
+        <!--Optional:-->
+        <resource-env-ref-type>token</resource-env-ref-type>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Zero or more repetitions:-->
+        <injection-target>
+            <injection-target-class>token</injection-target-class>
+            <injection-target-name>token</injection-target-name>
+        </injection-target>
+        <!--Optional:-->
+        <lookup-name>string</lookup-name>
+    </resource-env-ref>
+    <!--Zero or more repetitions:-->
+    <message-destination-ref>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <message-destination-ref-name>token</message-destination-ref-name>
+        <!--Optional:-->
+        <message-destination-type>token</message-destination-type>
+        <!--Optional:-->
+        <message-destination-usage>Produces</message-destination-usage>
+        <!--Optional:-->
+        <message-destination-link>token</message-destination-link>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Zero or more repetitions:-->
+        <injection-target>
+            <injection-target-class>token</injection-target-class>
+            <injection-target-name>token</injection-target-name>
+        </injection-target>
+        <!--Optional:-->
+        <lookup-name>string</lookup-name>
+    </message-destination-ref>
+    <!--Zero or more repetitions:-->
+    <persistence-context-ref>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <persistence-context-ref-name>token</persistence-context-ref-name>
+        <!--Optional:-->
+        <persistence-unit-name>token</persistence-unit-name>
+        <!--Optional:-->
+        <persistence-context-type>Transaction</persistence-context-type>
+        <!--Zero or more repetitions:-->
+        <persistence-property>
+            <name>string</name>
+            <value>string</value>
+        </persistence-property>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Zero or more repetitions:-->
+        <injection-target>
+            <injection-target-class>token</injection-target-class>
+            <injection-target-name>token</injection-target-name>
+        </injection-target>
+    </persistence-context-ref>
+    <!--Zero or more repetitions:-->
+    <persistence-unit-ref>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <persistence-unit-ref-name>token</persistence-unit-ref-name>
+        <!--Optional:-->
+        <persistence-unit-name>token</persistence-unit-name>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Zero or more repetitions:-->
+        <injection-target>
+            <injection-target-class>token</injection-target-class>
+            <injection-target-name>token</injection-target-name>
+        </injection-target>
+    </persistence-unit-ref>
+    <!--Zero or more repetitions:-->
+    <message-destination>
+        <!--Zero or more repetitions:-->
+        <description>string</description>
+        <!--Zero or more repetitions:-->
+        <display-name>token</display-name>
+        <!--Zero or more repetitions:-->
+        <icon>
+            <!--Optional:-->
+            <small-icon>token</small-icon>
+            <!--Optional:-->
+            <large-icon>token</large-icon>
+        </icon>
+        <message-destination-name>token</message-destination-name>
+        <!--Optional:-->
+        <mapped-name>string</mapped-name>
+        <!--Optional:-->
+        <lookup-name>string</lookup-name>
+    </message-destination>
+    <!--Zero or more repetitions:-->
+    <data-source>
+        <!--Optional:-->
+        <description>string</description>
+        <name>token</name>
+        <!--Optional:-->
+        <class-name>token</class-name>
+        <!--Optional:-->
+        <server-name>token</server-name>
+        <!--Optional:-->
+        <port-number>100</port-number>
+        <!--Optional:-->
+        <database-name>token</database-name>
+        <!--Optional:-->
+        <url>jdbc:mysql://localhost:3307/testdb</url>
+        <!--Optional:-->
+        <user>token</user>
+        <!--Optional:-->
+        <password>token</password>
+        <!--Zero or more repetitions:-->
+        <property>
+            <name>string</name>
+            <value>string</value>
+        </property>
+        <!--Optional:-->
+        <login-timeout>100</login-timeout>
+        <!--Optional:-->
+        <transactional>false</transactional>
+        <!--Optional:-->
+        <isolation-level>TRANSACTION_READ_UNCOMMITTED</isolation-level>
+        <!--Optional:-->
+        <initial-pool-size>100</initial-pool-size>
+        <!--Optional:-->
+        <max-pool-size>100</max-pool-size>
+        <!--Optional:-->
+        <min-pool-size>100</min-pool-size>
+        <!--Optional:-->
+        <max-idle-time>100</max-idle-time>
+        <!--Optional:-->
+        <max-statements>100</max-statements>
+    </data-source>
+</application>
