@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -14,6 +15,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +37,14 @@ import java.util.List;
 public final class EarDescriptorReader {
 
 
-    public static final String DISPLAY_NAME_ELEMENT = "display-name".intern();
-    public static final String DESCRIPTION_ELEMENT = "description".intern();
-    public static final String APPLICATION_NAME_ELEMENT = "application-name".intern();
+    private static final String DISPLAY_NAME_ELEMENT = "display-name".intern();
+    private static final String DESCRIPTION_ELEMENT = "description".intern();
 
-    public static final String LIBRARY_DIRECTORY_ELEMENT = "library-directory".intern();
-    public static final String MODULE_ELEMENT = "module".intern();
+    // version 6 only
+    private static final String APPLICATION_NAME_ELEMENT = "application-name".intern();
 
+    private static final String LIBRARY_DIRECTORY_ELEMENT = "library-directory".intern();
+    private static final String MODULE_ELEMENT = "module".intern();
 
     private static final String SCHEMA_LANGUAGE_ATTRIBUTE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
@@ -48,8 +52,12 @@ public final class EarDescriptorReader {
 
 
     public EarDescriptor read(InputStream inputStream) {
+        return read(new InputStreamReader(inputStream));
+    }
+
+    public EarDescriptor read(Reader reader) {
         try {
-            Document doc = readDocument(inputStream);
+            Document doc = readDocument(reader);
             Element element = doc.getDocumentElement();
             return parseApplicationElement(element);
         } catch (Exception ex) {
@@ -61,12 +69,9 @@ public final class EarDescriptorReader {
         String displayName = DomUtils.getChildElementValueByTagName(root, DISPLAY_NAME_ELEMENT);
         String description = DomUtils.getChildElementValueByTagName(root, DESCRIPTION_ELEMENT);
 
-        int version = Integer.parseInt(root.getAttribute("version"));
+        // version 6 only
+        String applicationName = DomUtils.getChildElementValueByTagName(root, APPLICATION_NAME_ELEMENT);
 
-        String applicationName = ApplicationNameHolder.get();
-        if (version == 6) {
-            applicationName = DomUtils.getChildElementValueByTagName(root, APPLICATION_NAME_ELEMENT);
-        }
 
         String libraryDir = DomUtils.getChildElementValueByTagName(root, LIBRARY_DIRECTORY_ELEMENT);
 
@@ -78,45 +83,17 @@ public final class EarDescriptorReader {
     private List<Module> parseModules(List<Element> moduleElements) {
         List<Module> result = new ArrayList<Module>();
         for (Element e : moduleElements) {
-            result.add(parseModule(e));
-        }
-
-        return result;
-    }
-
-    private Module parseModule(Element mod) {
-        // run down possible node types
-        Module result = parseModuleJava(mod);
-        if (result == null) {
-            result = parseModuleWeb(mod);
+            result.add(ModuleType.fromXmlElement(e));
         }
         return result;
     }
 
-    private Module parseModuleWeb(Element mod) {
-        WebModule result = null;
-        Element webElement = DomUtils.getChildElementByTagName(mod, "web");
-        if (webElement != null) {
-            result = new WebModule(DomUtils.getChildElementValueByTagName(webElement, "web-uri"),
-                                   DomUtils.getChildElementValueByTagName(webElement, "context-root"));
-        }
-        return result;
-    }
 
-    private Module parseModuleJava(Element mod) {
-        Module result = null;
-        Element javaElement = DomUtils.getChildElementByTagName(mod, "java");
-        if (javaElement != null) {
-            result = new Module(ModuleType.JAVA, javaElement.getNodeValue());
-        }
-        return result;
-    }
-
-    private Document readDocument(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
+    private Document readDocument(Reader reader) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilder builder = createDocumentBuilderFactory().newDocumentBuilder();
         builder.setEntityResolver(new EarReaderEntityResolver());
         builder.setErrorHandler(new EarReaderErrorHandler(LoggerFactory.getLogger(EarBridge.class)));
-        return builder.parse(inputStream);
+        return builder.parse(new InputSource(reader));
     }
 
     private DocumentBuilderFactory createDocumentBuilderFactory() {

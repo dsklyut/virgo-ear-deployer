@@ -43,6 +43,14 @@
             <groupId>org.eclipse.virgo.kernel</groupId>
             <artifactId>org.eclipse.virgo.kernel.services</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.virgo.medic</groupId>
+            <artifactId>org.eclipse.virgo.medic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.virgo.kernel</groupId>
+            <artifactId>org.eclipse.virgo.kernel.osgi</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.junit</groupId>

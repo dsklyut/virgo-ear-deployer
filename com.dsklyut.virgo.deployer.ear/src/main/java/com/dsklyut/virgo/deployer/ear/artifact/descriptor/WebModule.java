@@ -5,7 +5,7 @@ package com.dsklyut.virgo.deployer.ear.artifact.descriptor;
  * Date: 11/18/10
  * Time: 2:49 PM
  */
-public final class WebModule extends Module {
+final class WebModule extends Module {
 
     private final String contextPath;
 

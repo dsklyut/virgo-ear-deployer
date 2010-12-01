@@ -9,7 +9,7 @@
  *   VMware Inc. - initial contribution
  *******************************************************************************/
 
-package com.dsklyut.virgo.deployer.ear.util;
+package com.dsklyut.virgo.deployer.ear.artifact.descriptor.internal;
 
 import java.io.File;
 import java.io.FileInputStream;

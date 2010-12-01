@@ -8,7 +8,7 @@ package com.dsklyut.virgo.deployer.ear.artifact.descriptor;
  * TODO: consider extending ArtifactSpecification
  */
 public class Module {
-
+ 
     private final ModuleType type;
     private final String path;
 

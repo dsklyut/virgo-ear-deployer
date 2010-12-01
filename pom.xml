@@ -380,7 +380,7 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.virgo.util</groupId>
-                <artifactId>org.eclipse.virgo.util.sogi</artifactId>
+                <artifactId>org.eclipse.virgo.util.osgi</artifactId>
                 <version>${virgo.util.version}</version>
             </dependency>
 
@@ -434,6 +434,19 @@
                 <groupId>org.eclipse.virgo.kernel</groupId>
                 <artifactId>org.eclipse.virgo.kernel.deployer</artifactId>
                 <version>${virgo.kernel.version}</version>
+            </dependency>
+
+            <!-- some clean up of virgo dependencies -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>com.springsource.org.apache.commons.httpclient</artifactId>
+                <version>3.1.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.commons</groupId>
+                        <artifactId>com.springsource.org.apache.commons.logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- junit -->

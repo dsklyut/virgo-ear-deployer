@@ -1,5 +1,6 @@
 package com.dsklyut.virgo.deployer.ear.artifact.descriptor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public final class EarDescriptor {
 
-    public static final String DEFAULT_LIBRARY_DIRECTORY = "lib".intern();
+    private static final String DEFAULT_LIBRARY_DIRECTORY = "lib".intern();
 
     /**
      * Name of the application (right now only for v6).
@@ -49,7 +50,12 @@ public final class EarDescriptor {
         this.description = description;
         this.displayName = displayName;
         this.libraryDirectory = libraryDirectory == null ? DEFAULT_LIBRARY_DIRECTORY : libraryDirectory;
-        this.modules = Collections.unmodifiableList(modules);
+
+        this.modules = Collections.unmodifiableList(modules == null ? Collections.<Module>emptyList() : modules);
+    }
+
+    public String getApplicationName() {
+        return applicationName;
     }
 
     /**
@@ -88,4 +94,17 @@ public final class EarDescriptor {
     public List<Module> getModules() {
         return modules;
     }
+
+
+    public List<Module> listUnsupportedModules() {
+        List<Module> result = new ArrayList<Module>();
+        for (Module m : getModules()) {
+            if (!m.getType().isSupported()) {
+                result.add(m);
+            }
+        }
+        return result;
+
+    }
+
 }

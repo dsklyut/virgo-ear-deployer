@@ -1,24 +1,25 @@
 package com.dsklyut.virgo.deployer.ear.artifact;
 
+import com.dsklyut.virgo.deployer.ear.artifact.descriptor.EarDescriptor;
 import com.dsklyut.virgo.deployer.ear.artifact.descriptor.EarDescriptorReader;
-import com.dsklyut.virgo.deployer.ear.util.EarUtils;
+import com.dsklyut.virgo.deployer.ear.artifact.descriptor.Module;
+import com.dsklyut.virgo.deployer.ear.artifact.descriptor.internal.EarUtils;
 import org.eclipse.virgo.repository.ArtifactBridge;
 import org.eclipse.virgo.repository.ArtifactDescriptor;
 import org.eclipse.virgo.repository.ArtifactGenerationException;
 import org.eclipse.virgo.repository.HashGenerator;
 import org.eclipse.virgo.repository.builder.ArtifactDescriptorBuilder;
-import org.eclipse.virgo.repository.builder.AttributeBuilder;
+import org.eclipse.virgo.util.common.CollectionUtils;
 import org.eclipse.virgo.util.common.StringUtils;
-import org.eclipse.virgo.util.osgi.manifest.BundleManifest;
+import org.eclipse.virgo.util.io.IOUtils;
 import org.osgi.framework.Version;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 
 /**
  * User: dsklyut
@@ -28,6 +29,7 @@ import java.io.Reader;
 @Component
 public class EarBridge implements ArtifactBridge {
 
+    private static final String SYMBOLIC_NAME_REGEX = "[-_0-9a-zA-Z]+(\\.[-_0-9a-zA-Z]+)*";
     private final static String BRIDGE_TYPE = "ear";
 
 
@@ -42,75 +44,86 @@ public class EarBridge implements ArtifactBridge {
 
 
     public ArtifactDescriptor generateArtifactDescriptor(File artifactFile) throws ArtifactGenerationException {
-        Reader appDescriptorReader;
-//        BundleManifest manifest;
-
+        EarDescriptor earDescriptor = null;
+        Reader appDescriptorReader = null;
         try {
+            // EAR MUST have a META-INF/application.xml
             appDescriptorReader = EarUtils.readEarApplicationDescriptor(artifactFile);
-//            manifest = EarUtils.readBundleManifest(artifactFile, BRIDGE_TYPE);
-        } catch (IOException ioe) {
-            throw new ArtifactGenerationException("Failed to read manifest from " + artifactFile, BRIDGE_TYPE, ioe);
+            earDescriptor = reader.read(appDescriptorReader);
+
+            // TODO: figure out if there should be a fallback on the MANIFEST.MF for par/bundle headers? 
+
+        } catch (Exception ex) {
+            throw new ArtifactGenerationException("Failed to read application descriptor from " + artifactFile, BRIDGE_TYPE, ex);
+        } finally {
+            IOUtils.closeQuietly(appDescriptorReader);
         }
 
-        throw new UnsupportedOperationException("not implemented yet");
+        validateDescriptor(earDescriptor);
+
+        return createArtifactDescriptorFromEarDescriptor(earDescriptor, artifactFile);
+    }
+
+    private void validateDescriptor(EarDescriptor earDescriptor) throws ArtifactGenerationException {
+        List<Module> unsupportedModules = earDescriptor.listUnsupportedModules();
+        if (!CollectionUtils.isEmpty(unsupportedModules)) {
+            StringBuilder sb = new StringBuilder("Failed to validate deployment.  Contains unsupported deployment types ");
+            for (Module m : unsupportedModules) {
+                sb.append("'").append(m.getType().getType()).append("' ");
+            }
+            throw new ArtifactGenerationException(sb.toString(), BRIDGE_TYPE);
+        }
     }
 
 
-//    private ArtifactDescriptor createDescriptorFromManifest(BundleManifest manifest, File artifactFile) throws
-//                                                                                                        ArtifactGenerationException {
-//
-//        String symbolicName = getApplicationSymbolicName(manifest);
-//
-//        if (symbolicName == null) {
-//            return null;
-//        }
-//
-//        Version version = getApplicationVersion(manifest);
-//
-//        ArtifactDescriptorBuilder builder = new ArtifactDescriptorBuilder();
-//        builder.setType(BRIDGE_TYPE).setName(symbolicName).setVersion(version).setUri(artifactFile.toURI());
-//
-//        applyAttributeIfPresent(HEADER_APPLICATION_NAME, manifest, builder);
-//        applyAttributeIfPresent(HEADER_APPLICATION_DESCRIPTION, manifest, builder);
-//
-//        this.hashGenerator.generateHash(builder, artifactFile);
-//
-//        return builder.build();
-//    }
-//
-//    private void applyAttributeIfPresent(String headerName, BundleManifest manifest, ArtifactDescriptorBuilder builder) {
-//        String headerValue = manifest.getHeader(headerName);
-//        if (headerValue != null) {
-//            AttributeBuilder attributeBuilder = new AttributeBuilder();
-//            builder.addAttribute(attributeBuilder.setName(headerName).setValue(headerValue).build());
-//        }
-//    }
-//
-//    private Version getApplicationVersion(BundleManifest manifest) throws ArtifactGenerationException {
-//        String versionString = manifest.getHeader(HEADER_APPLICATION_VERSION);
-//        Version version;
-//
-//        if (!StringUtils.hasText(versionString)) {
-//            version = Version.emptyVersion;
-//        } else {
-//            try {
-//                version = new Version(versionString);
-//            } catch (IllegalArgumentException iae) {
-//                throw new ArtifactGenerationException("Version '" + versionString + "' is ill-formed", iae);
-//            }
-//        }
-//        return version;
-//    }
-//
-//    private String getApplicationSymbolicName(BundleManifest manifest) throws ArtifactGenerationException {
-//        String symbolicName = manifest.getHeader(HEADER_APPLICATION_SYMBOLIC_NAME);
-//
-//        if (!StringUtils.hasText(symbolicName)) {
-//            return null;
-//        }
-//        if (!symbolicName.matches(SYMBOLIC_NAME_REGEX)) {
-//            throw new ArtifactGenerationException(HEADER_APPLICATION_SYMBOLIC_NAME + " '" + symbolicName + "' contains illegal characters");
-//        }
-//        return symbolicName;
-//    }
+    private ArtifactDescriptor createArtifactDescriptorFromEarDescriptor(EarDescriptor descriptor, File artifactFile) throws
+                                                                                                                      ArtifactGenerationException {
+
+        String symbolicName = getApplicationSymbolicName(descriptor, artifactFile.getName());
+
+        if (symbolicName == null) {
+            return null;
+        }
+
+        Version version = getApplicationVersion(descriptor);
+
+        ArtifactDescriptorBuilder builder = new ArtifactDescriptorBuilder();
+        builder.setType(BRIDGE_TYPE).setName(symbolicName).setVersion(version).setUri(artifactFile.toURI());
+
+        // TODO: bundle name, description, etc
+        // TODO: should we add all found modules right in here like a plan?
+
+        this.hashGenerator.generateHash(builder, artifactFile);
+
+        return builder.build();
+    }
+
+    // TODO: figure out how to compute version
+    private Version getApplicationVersion(EarDescriptor descriptor) throws ArtifactGenerationException {
+        return Version.emptyVersion;
+    }
+
+
+    private boolean isValidSymbolicName(String symbolicName) {
+        return !StringUtils.hasText(symbolicName) && !symbolicName.matches(SYMBOLIC_NAME_REGEX);
+    }
+
+    private String getApplicationSymbolicName(EarDescriptor descriptor, String fallback) throws ArtifactGenerationException {
+
+        String symbolicName = descriptor.getApplicationName();
+
+        if (isValidSymbolicName(symbolicName)) {
+            return symbolicName;
+        }
+
+        symbolicName = StringUtils.stripFilenameExtension(StringUtils.getFilename(fallback));
+        // otherwise try fallback (i.e. filename)
+        if (isValidSymbolicName(symbolicName)) {
+            return symbolicName;
+        }
+
+        throw new ArtifactGenerationException(String.format("Error validating application symbolic name.  Both application-name '%s' and fallback file name '%s' a contains illegal characters",
+                                                            descriptor.getApplicationName(),
+                                                            symbolicName));
+    }
 }
