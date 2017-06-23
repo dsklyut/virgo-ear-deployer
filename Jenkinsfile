@@ -3,8 +3,18 @@ pipeline {
   stages {
     stage('Compile') {
       steps {
-        tool(name: 'MAVEN_3.5', type: 'maven')
-        tool(name: 'JDK_1.8', type: 'jdk')
+        parallel(
+          "Compile": {
+            tool(name: 'MAVEN_3.5', type: 'maven')
+            tool(name: 'JDK_1.8', type: 'jdk')
+            
+          },
+          "Step 1": {
+            sh 'mvn --version'
+            echo 'Step 1'
+            
+          }
+        )
       }
     }
   }
